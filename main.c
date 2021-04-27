@@ -5,6 +5,7 @@
 #include <dos.h>
 #include <dir.h>
 #include <time.h>
+#include <stdbool.h>
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Defino colores ~~~~~*/
 #define Black          0
@@ -32,6 +33,7 @@
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Definicion de constantes ~~~~~*/
 #define MAX_LENGTH_DATA 9
+#define MILISECONDS_BETWEEN_FRAMES 1500
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Defino funciones ~~~~~*/
 void set_color(int);
@@ -82,39 +84,84 @@ void load_data(int data[], int length) {
 
 void sort_data(int data[], int length) {
 /* Funcion que organiza de mayor a menor los datos con el metodo de burbuja ~~~~~*/
-    int index, j;
-    for (j = 1; j < length; j++) {
-        
-        for (index = 1; index < length; index++) {
-            int current_val = data[index];
-            int prev_val = data[index-1];
-            if (index == (j+1)) {
-                set_color(Green);
-            } else if (index == j) {
-                set_color(Blue);
-            } else {
-                set_color(Red);
+    int index, limite, current_val, next_val;
+    bool should_swap;
+
+
+    /* Itero todos los valores exepto el ultimo, para marcas el limite del ordenamiento ~~~~~*/
+    for (limite = 0; limite < length; limite++) {
+
+        /* Recorro los valores hasta el limite y voy llevando el mayor valor al final del arreglo ~~~~~*/
+        for (index = 0; index < (length-1-limite); index++) {
+
+            should_swap = false;
+
+            /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Defino el valor actual y el siguiente ~~~~~*/
+            current_val = data[index];
+            next_val = data[index+1];
+
+            /*~~~~~~ Cambio los valores si es mayor el valor actual que el siguiente ~~~~~*/
+            if (current_val > next_val) {
+                data[index] = next_val;
+                data[index+1] = current_val;
+                should_swap = true;
+            } 
+
+            /*~~~~~~~~~~~~~~~~~~~~ Muestro todos los valores para hacer la animacion ~~~~~*/
+            for (index = 0; index < length; index++) {
+                /*if (index == limite) {*/
+                    /*set_color(Green);*/
+                    /*printf("\t %d <--- \n", data[index]);*/
+                /*} else if (data[index] == next_val) {*/
+                    /*if (should_swap) {*/
+                        /*set_color(Yellow);*/
+                        /*printf("\t  %d\n", data[index]);*/
+                    /*} else {*/
+                        /*set_color(Blue);*/
+                        /*printf("\t  %d\n", data[index]);*/
+                    /*}*/
+                /*} else if (data[index] == current_val) {*/
+                    /*if (should_swap) {*/
+                        /*set_color(Blue);*/
+                        /*printf("\t  %d\n", data[index]);*/
+                    /*} else {*/
+                        /*set_color(Yellow);*/
+                        /*printf("\t  %d\n", data[index]);*/
+                    /*}*/
+                /*} else {*/
+                    /*set_color(Red);*/
+                    /*printf("\t %d \n", data[index]);*/
+                /*}*/
+                if (index == limite) {
+                    set_color(Green);
+                } else if (data[index] == current_val) {
+                    set_color(Blue);
+                } else if (data[index] == next_val) {
+                    set_color(Blue);
+                } else {
+                    set_color(Red);
+                }
+                printf("%d\n", data[index]);
             }
-            printf("%d \t", prev_val);
-            set_color(Red);
-            printf("|");
-            if (prev_val > current_val) {
-                data[index] = prev_val;
-                data[index-1] = current_val;
-            } else {
-                data[index] = current_val;
-                data[index-1] = prev_val;
-            }
+
+            delay(2000);
+            clc();
+
         }
 
-        delay(5000);
-        clc();
+        /* Espero un tiempo para que sea perceptible la animacion, y luego limpio la pantalla ~~~~~*/
+        /*if (limite != (length-1) ) {*/
+            /*delay(MILISECONDS_BETWEEN_FRAMES);*/
+            /*clc();*/
+        /*}*/
 
     }
     return;
 }
 
 void delay(int milliseconds) {
+    /*~ Funcion que espera x milisegundos que se especifican en el argumento, se requiere la inclusion de la libreria <time.h> ~~~~~*/
+
     long pause;
     clock_t now,then;
 
@@ -122,4 +169,5 @@ void delay(int milliseconds) {
     now = then = clock();
     while( (now-then) < pause )
         now = clock();
+
 }
