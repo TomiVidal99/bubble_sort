@@ -1,3 +1,6 @@
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SOLO COMPILABLE PARA WINDOWS ~~~~~*/
+/*NO SE PUEDE COMPILAR PARA LINUX PORQUE SE IMPORTAN LIBRERIAS SOLO DISPONIBLES EN WINDOWS*/
+
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Importo librerias ~~~~~*/
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,15 +28,10 @@
 #define Yellow         14
 #define White          15
 
-/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ CAMBIAR DEPENDIENDO DEL SISTEMA OPERATIVO ~~~~~*/
-/*WINDOWS*/
-#define clc() system("cls")
-/*LINUx*/
-/*#define clc() system("clear")*/
-
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Definicion de constantes ~~~~~*/
 #define MAX_LENGTH_DATA 9
 #define MILISECONDS_BETWEEN_FRAMES 1500
+#define clc() system("cls")
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Defino funciones ~~~~~*/
 void set_color(int);
