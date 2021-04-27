@@ -38,7 +38,7 @@
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Defino funciones ~~~~~*/
 void set_color(int);
 void load_data(int [], int);
-void sort_data(int [], int, int);
+void sort_data(int [], int, int, bool);
 void delay(int);
 void get_random_data(int [], int, int);
 void get_data_length(int *);
@@ -64,7 +64,7 @@ int main() {
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ CARGO LA ANIMACION Y ORDENO EL ARREGLO ~~~~~*/
     clc();
-    sort_data(data, max_length, animation_delay);
+    sort_data(data, max_length, animation_delay, true);
 
     printf("\n\nAnimacion finalizada! ");
 
@@ -99,7 +99,7 @@ void load_data(int data[], int length) {
     return;
 }
 
-void sort_data(int data[], int length, int milliseconds_between_animations) {
+void sort_data(int data[], int length, int milliseconds_between_animations, bool should_animate) {
 /* Funcion que organiza de mayor a menor los datos con el metodo de burbuja ~~~~~*/
     int index, limit, current_val, next_val, current_index, next_index, animation_iterator;
     bool should_swap;
@@ -126,43 +126,44 @@ void sort_data(int data[], int length, int milliseconds_between_animations) {
             } 
 
             /*~~~~~~~~~~~~~~~~~~~~ Muestro todos los valores para hacer la animacion ~~~~~*/
-            for (animation_iterator = 0; animation_iterator < length; animation_iterator++) {
-                if (limit != (length-2)) {
+            if (should_animate) {
+                for (animation_iterator = 0; animation_iterator < length; animation_iterator++) {
+                    if (limit != (length-2)) {
 
-                    if (animation_iterator == next_index) {
-                        if (should_swap) {
-                            set_color(Yellow);
-                            printf("\t\t  %d ---> CAMBIAR\n", data[animation_iterator]);
+                        if (animation_iterator == next_index) {
+                            if (should_swap) {
+                                set_color(Yellow);
+                                printf("\t\t  %d ---> CAMBIAR\n", data[animation_iterator]);
+                            } else {
+                                set_color(Blue);
+                                printf("\t  %d\n", data[animation_iterator]);
+                            }
+                        } else if (animation_iterator == current_index) {
+                            if (should_swap) {
+                                set_color(Yellow);
+                                printf("\t\t  %d ---> CAMBIAR\n", data[animation_iterator]);
+                            } else {
+                                set_color(Blue);
+                                printf("\t  %d\n", data[animation_iterator]);
+                            }
+                        } else if (animation_iterator == limit) {
+                            set_color(Green);
+                            printf("\t %d <--- \n", data[animation_iterator]);
                         } else {
-                            set_color(Blue);
-                            printf("\t  %d\n", data[animation_iterator]);
+                            set_color(Red);
+                            printf("\t %d \n", data[animation_iterator]);
                         }
-                    } else if (animation_iterator == current_index) {
-                        if (should_swap) {
-                            set_color(Yellow);
-                            printf("\t\t  %d ---> CAMBIAR\n", data[animation_iterator]);
-                        } else {
-                            set_color(Blue);
-                            printf("\t  %d\n", data[animation_iterator]);
-                        }
-                    } else if (animation_iterator == limit) {
-                        set_color(Green);
-                        printf("\t %d <--- \n", data[animation_iterator]);
                     } else {
-                        set_color(Red);
+                        set_color(White);
                         printf("\t %d \n", data[animation_iterator]);
                     }
-                } else {
-                    set_color(White);
-                    printf("\t %d \n", data[animation_iterator]);
+                }
+
+                delay(milliseconds_between_animations);
+                if (limit != (length-2) || animation_iterator < (length-1)) {
+                    clc();
                 }
             }
-
-            delay(milliseconds_between_animations);
-            if (limit != (length-2) || animation_iterator < (length-1)) {
-                clc();
-            }
-
         }
 
     }
